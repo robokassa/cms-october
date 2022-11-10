@@ -28,7 +28,9 @@ class PaymentGateway extends AbstractPaymentGateway
     const SUCCESS_URL = 'robokassa/success';
     const FAIL_URL = 'robokassa/fail';
 
-    const POST_URL = 'https://auth.robokassa.ru/Merchant/Index.aspx?';
+    const POST_URL_KZ = 'https://auth.robokassa.kz/Merchant/Index.aspx?';
+    const POST_URL_RU = 'https://auth.robokassa.ru/Merchant/Index.aspx?';
+
 
     const EVENT_FAIL_RETURN_URL = 'shopaholic.payment.robokassa.fail.redirect_url';
     const EVENT_SUCCESS_RETURN_URL = 'shopaholic.payment.robokassa.success.redirect_url';
@@ -136,7 +138,8 @@ class PaymentGateway extends AbstractPaymentGateway
      */
     protected function processPurchaseResponse()
     {
-        $this->sRedirectURL = self::POST_URL .
+        $url = $this->getGatewayProperty('country') == 'RUS' ? self::POST_URL_RU : self::POST_URL_KZ;
+        $this->sRedirectURL = $url .
             "MrchLogin=" . $this->arRequestData['MrchLogin'] .
             "&OutSum=" . $this->arRequestData['OutSum'] .
             "&InvId=" . $this->arRequestData['InvId'] .
