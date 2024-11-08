@@ -69,7 +69,6 @@ class PaymentGateway extends AbstractPaymentGateway
      */
     protected function preparePurchaseData()
     {
-
         $this->arRequestData = [
             'MrchLogin' => $this->getGatewayProperty('merchant_login'),
             'Pass1' => $this->getGatewayProperty('pass1'),
@@ -80,6 +79,8 @@ class PaymentGateway extends AbstractPaymentGateway
             'culture' => $this->getGatewayProperty('culture'),
             'isTest' => $this->getGatewayProperty('is_test')
         ];
+
+        $this->arRequestData['shp_label'] = 'official_october';
 
         $login = $this->arRequestData['MrchLogin'];
         $pass1 = $this->arRequestData['Pass1'];
@@ -94,8 +95,8 @@ class PaymentGateway extends AbstractPaymentGateway
         $hash = "$login:$outsumm:$invid";
 
         if(
-        ($this->getGatewayProperty('country') == 'RUS' && $this->obPaymentMethod->gateway_currency != 'RUR') ||
-        ($this->getGatewayProperty('country') == 'KAZ' && $this->obPaymentMethod->gateway_currency != 'KZT')
+            ($this->getGatewayProperty('country') == 'RUS' && $this->obPaymentMethod->gateway_currency != 'RUR') ||
+            ($this->getGatewayProperty('country') == 'KAZ' && $this->obPaymentMethod->gateway_currency != 'KZT')
         )
         {
             $OutSumCurrency = $this->arRequestData['currency'];
@@ -109,10 +110,14 @@ class PaymentGateway extends AbstractPaymentGateway
         }
 
 
-        $hash .= ":$pass1";
-        $this->signatureValue = md5($hash);
 
+        $hash .= ":$pass1";
+
+        $hash .= ":shp_label=official_october"; // новый параметр
+
+        $this->signatureValue = md5($hash);
     }
+
 
     /**
      * Validate purchase data array for request
@@ -145,7 +150,8 @@ class PaymentGateway extends AbstractPaymentGateway
             "&InvId=" . $this->arRequestData['InvId'] .
             "&Desc=" . $this->arRequestData['Desc'] .
             '&Culture=' . $this->arRequestData['culture'] .
-            "&SignatureValue=" . $this->signatureValue;
+            "&SignatureValue=" . $this->signatureValue .
+            "&shp_label=official_october";
 
         if(isset($this->arRequestData['Receipt']))
         {
