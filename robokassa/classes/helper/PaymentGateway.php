@@ -113,7 +113,7 @@ class PaymentGateway extends AbstractPaymentGateway
 
         $hash .= ":$pass1";
 
-        $hash .= ":shp_label=official_october"; // новый параметр
+        $hash .= ":shp_label=official_october";
 
         $this->signatureValue = md5($hash);
     }
