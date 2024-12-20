@@ -107,7 +107,12 @@ class ExtendPaymentMethodFieldsHandler extends AbstractBackendFieldHandler
                         'vat110' => 'НДС чека по расчетной ставке 10/110',
                         'vat20' => 'НДС чека по ставке 20%',
                         'vat120' => 'НДС чека по расчетной ставке 20/120',
+                        'vat5' => 'НДС по ставке 5%',
+                        'vat7' => 'НДС по ставке 7%',
+                        'vat105' => 'НДС чека по расчетной ставке 5/105',
+                        'vat107' => 'НДС чека по расчетной ставке 7/107',
                     ]
+
                 ],
                 'gateway_property[payment_method]' => [
                     'label' => 'Признак способа расчёта',
